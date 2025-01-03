@@ -1,0 +1,33 @@
+networks:
+  monreseau:
+    external: false
+
+services:
+  web:
+    build: .
+    container_name: monsite
+    entrypoint: /app/entrypoint.sh
+    volumes:
+      - .:/app
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+    networks: 
+      - monreseau  # Correction ici
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: MyWellness
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Divya@9102
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: 
+      - monreseau  # Correction ici
+
+volumes:
+  pgdata:
